@@ -6,3 +6,11 @@ This is the basic Hardhat "greeter" project with a React Front-end attached to i
 
 - Hardhat
 - React
+
+## Guide
+
+Open your terminal window and run the following commands:
+
+  - git clone https://github.com/moshodi/Greeter-DApp.git
+  - cd Greeter-DApp
+  - npm run start
