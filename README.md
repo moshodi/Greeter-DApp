@@ -1,15 +1,8 @@
-# Basic Sample Hardhat Project
+# Greeter DApp
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This is the basic Hardhat "greeter" project with a React Front-end attached to it. This project is currently only under localhost development but once it is finished it will be available on a live testnet.
 
-Try running some of the following tasks:
+## Tech Stack
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+- Hardhat
+- React
