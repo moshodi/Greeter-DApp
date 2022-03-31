@@ -1,90 +1,88 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
+
+// import ABI
 import Greeter from "./artifacts/contracts/Greeter.sol/Greeter.json";
 import './App.css';
 
-const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-
+const greeterAddress = "0x06A9e60a451C041C195907144B1DaAa030797a07";
 
 function App() {
+    //Property Variables
+    const [message, setMessage] = useState("");
 
-  //Property Variables
-  const [message, setMessage] = useState("");
-  //Helper functions
+    //Helper Functions
 
-  //Request access to the user's Metamask account
-  //https://metamask.io/
-  async function requestAccount() {
-    await window.ethereum.request( { method: 'eth_requestAccounts'});
-  }
+    //Requests access to user's metamask account
+    //https://metamask.io/
+    async function requestAccount() {
+      await window.ethereum.request( {method: 'eth_requestAccounts'});
+    }
 
-  //fetches current value store of 'greeting' in the smart contract
-  async function fetchGreeting() {
-    //if metmask exists
-    if (typeof window.ethereum !== undefined) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
-      try {
-        //call Greeter.greet()
-        /*
-
-        function greet() public view returns (string memory) {
-          return greeting;
+    //Fetches the greeting from the smart contract
+    async function fetchGreeting() {
+      if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
+        try {
+          //call Greeter.greet()
+          const data = await contract.greet();
+          console.log('Data: ', data);
+        } catch (error) {
+          console.log('Error: ', error);
         }
-
-        */
-        const data = await contract.greet()
-        console.log("Greeting: ", data);
-      } catch (error) {
-        console.log('Error: ', error);
       }
     }
-  }
 
-  async function setGreeting() {
-    if (!message) return;
+    async function setGreeting() {
+      if (!message) return;
 
-    //If Metamask exists
-    if (typeof window.ethereum !== "undefined") {
-      await requestAccount()
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      // if metamask exists
+      if (typeof window.ethereum !== "undefined") {
+        await requestAccount();
 
-      //Create contract with signer
-      /*
-        function setGreeting(string memory _greeting) public {
-          console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
-          greeting = _greeting;
-        }
-      */
-      const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer);
-      const transaction = await contract.setGreeting(message);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
 
-      setMessage("");
-      await transaction.wait();
-      fetchGreeting();
+        //create contract with signer
+        const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer);
+        const transaction = await contract.setGreeting(message);
+        setMessage("")
+        await transaction.wait();
+        fetchGreeting();
+      }
     }
-  }
 
+    //Return
     return (
       <div className = "App">
-        <div className='App Header'>
+        <div className="App-header">
+          {/* DESCRIPTION */}
           <div className='description'>
             <h1>Greeter.sol</h1>
-            <h3>Full stack app using ReactJs and Hardhat</h3>
+            <h3>Full Stack DApp using ReactJS and Hardhat</h3>
           </div>
-          <div className='custom-buttons'>
+          {/* BUTTONS - Fetch and Set */}
+          <div className="custom-buttons">
             <button
+
             onClick={fetchGreeting}
-            style={{backgroundColor: 'green'}}>Fetch Greeting</button>
+
+            style={{ backgroundColor: 'green'}}>Fetch Greeting</button>
             <button
+
             onClick={setGreeting}
+
             style={{backgroundColor: 'red'}}>Set Greeting</button>
           </div>
-        <input
-        onChange={(e) => setMessage(e.target.value)}
-        value={message}
-        placeholder='Set Greeting Message'/>
+          {/* INPUT TEXT - String */}
+          <input
+            //connecting helper functions to event listeners
+            // on change events for the input text
+            onChange={(e) => setMessage(e.target.value)}
+            value = {message}
+            placeholder='Set Greeting Message'
+          />
         </div>
       </div>
     );

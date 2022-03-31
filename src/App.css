@@ -16,9 +16,22 @@
 .custom-buttons button {
     font-size: 24px;
     margin-bottom: 24px;
+    color: white;
     padding: 12px;
+    font-weight: bold;
+    margin-right: 16px;
+    border-radius: 16px;
 }
 
 input {
     font-size: 24px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.description {
+    background-color: darkgray;
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 64px;
 }
